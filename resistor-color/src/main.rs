@@ -17,22 +17,22 @@ pub enum ResistorColor {
 }
 
 pub fn color_to_value(_color: ResistorColor) -> usize {
-    unimplemented!("convert a color into a numerical representation")
-    //_color::int_value() as usize
+    _color as usize
 }
 
 pub fn value_to_color_string(value: usize) -> String {
     match ResistorColor::from_int(value) {
-        Ok( ret1 ) => ret1,
-        Err( ret2 ) => ret2,
+        Ok( ret1 ) => format!("{:?}", ret1),
+        _ => "value out of range".to_string(),
     }
 }
 
 pub fn colors() -> Vec<ResistorColor> {
-    ResistorColor::into_enum_iter().cloned().collect()
+    Vec::from_iter(ResistorColor::into_enum_iter())
 }
 
 fn main() {
     println!("{:?}", color_to_value( ResistorColor::Red ) );
-    println!("{:?}", value_to_color_string( 9 ) );
+    println!("{}", value_to_color_string( 9 ) );
+    println!("{:?}", colors());
 }
