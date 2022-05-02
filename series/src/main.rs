@@ -1,12 +1,12 @@
 pub fn series(digits: &str, len: usize) -> Vec<String> {
-    match len {
-        0 => vec!["".to_string(); digits.len() + 1],
-        _ => digits
-            .chars()
-            .collect::<Vec<char>>()
-            .windows(len)
-            .map(|c| c.iter().collect::<String>())
-            .collect(),
+    if len > digits.len() {
+        vec![]
+    } else {
+        let max_idx = digits.len() - len + 1;
+
+        (0..max_idx)
+            .map(|i| digits[i..i + len].to_string())
+            .collect()
     }
 }
 
