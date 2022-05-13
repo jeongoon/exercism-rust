@@ -1,24 +1,21 @@
-pub fn nth(mut n: u32) -> u32 {
+pub fn nth(n: u32) -> u32 {
     let mut primes: Vec<u32> = vec![2, 3];
-    let mut candi = 3;
 
     match n {
         0 => 2,
         1 => 3,
-        _ => {
-            'new_number: while n > 1 {
-                candi += 2;
-                n -= 1;
-                for p in primes.iter() {
-                    if candi % p == 0 {
-                        continue 'new_number;
-                    }
+        _ => (5..)
+            .step_by(2)
+            .filter(|&candi| {
+                if !primes.iter().any(|&p| candi % p == 0) {
+                    primes.push(candi);
+                    true
+                } else {
+                    false
                 }
-                n -= 1;
-                primes.push(candi);
-            }
-            primes.last().unwrap()
-        }
+            })
+            .nth((n - 2) as usize)
+            .unwrap(),
     }
 }
 
