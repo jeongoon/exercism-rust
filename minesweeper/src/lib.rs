@@ -1,80 +1,42 @@
-use std::collections::{hash_map::Entry::Occupied, hash_map::Entry::Vacant, HashMap};
-
-#[derive(PartialEq, Eq, Hash, Clone, Copy)]
-struct Coord(usize, usize);
-
 pub fn annotate(minefield: &[&str]) -> Vec<String> {
-    let mut acc = HashMap::<Coord, usize>::new();
-    let row_size = minefield.len();
-    let col_sizes = minefield.iter().map(|&s| s.len()).collect::<Vec<usize>>();
+    let nine_cells = |x: usize, max_count: usize| {
+        // note: this capture actually includes the center position as well
+        // but `find_mines` will only exectued on non-mine cell
+        // so the cell istelf always doesn't have a mine.
+        (x.saturating_sub(1))..(x + 1).min(max_count.saturating_sub(1)).saturating_add(1)
+    };
 
-    let (mines, mine_frees, mut annotated) = minefield.iter().enumerate().fold(
-        (
-            Vec::<Coord>::new(),
-            Vec::<Coord>::new(),
-            Vec::<String>::new(),
-        ),
-        |(mut mines, mut mine_frees, mut annotated), (r, &minerow)| {
-            minerow.chars().enumerate().for_each(|(c, ch)| {
-                let mut annorow_string = String::new();
+    let find_mines = |r: usize, c: usize| -> usize {
+        nine_cells(r, minefield.len())
+            .map(|r1| {
+                minefield
+                    .get(r1 as usize)
+                    .map(|&row| {
+                        //println!("{} for {} {}", r1, r, row);
+                        row.get(nine_cells(c, row.len()))
+                            .map(|ns| ns.chars().filter(|c| c == &'*').count())
+                            .unwrap_or(0)
+                    })
+                    .unwrap_or(0)
+            })
+            .sum::<usize>()
+    };
 
-                match ch {
-                    '*' => {
-                        mines.push(Coord(r, c));
-                        annorow_string.push('*');
-                    }
-                    _ => {
-                        mine_frees.push(Coord(r, c));
-                        annorow_string.push(' ');
-                    }
-                }
-                annotated.push(annorow_string);
-            });
-            (mines, mine_frees, annotated)
-        },
-    );
-
-    mines
+    minefield
         .iter()
-        .map(|coord| {
-            (((coord.1 as i64) - 1)..((coord.1 as i64) + 1))
-                .filter_map(move |y| {
-                    if 0 <= y && y <= (row_size as i64) {
-                        Some(
-                            (((coord.0 as i64) - 1)..((coord.0 as i64) + 1))
-                                .filter_map(move |x| {
-                                    if 0 <= x
-                                        && &(x as usize) <= col_sizes.get(y as usize).unwrap()
-                                        && !((coord.0 as i64) == x && (coord.1 as i64) == x)
-                                    {
-                                        Some(x)
-                                    } else {
-                                        None
-                                    }
-                                })
-                                .map(move |x_| Coord(x_ as usize, y as usize)),
-                        )
-                    } else {
-                        None
-                    }
+        .enumerate()
+        .map(|(row, &rowstr)| {
+            rowstr
+                .chars()
+                .enumerate()
+                .map(|(col, ch)| match ch {
+                    '*' => '*',
+                    _ => match find_mines(row, col) {
+                        0 => ' ',
+                        k => char::from_digit(k as u32, 10).unwrap(),
+                    },
                 })
-                .flatten()
+                .collect::<String>()
         })
-        .flatten()
-        .for_each(|coord| match acc.entry(coord) {
-            Occupied(o) => *o.into_mut() += 1,
-            Vacant(v) => {
-                v.insert(1);
-            }
-        });
-
-    mine_frees.iter().for_each(|coord| {
-        annotated.get_mut(coord.1).map(|row_str| {
-            row_str
-                .get_mut(coord.0..coord.0)
-                .map(|_| acc.entry(*coord).or_default().to_string())
-        });
-    });
-
-    annotated
+        .collect::<Vec<String>>()
 }

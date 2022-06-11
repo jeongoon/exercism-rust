@@ -1,4 +1,4 @@
-use lib
+use minesweeper::annotate;
 
 fn remove_annotations(board: &[&str]) -> Vec<String> {
     board.iter().map(|r| remove_annotations_in_row(r)).collect()
@@ -89,7 +89,7 @@ fn horizontal_line() {
     ]);
 }
 
- #[test]
+#[test]
 #[ignore]
 fn horizontal_line_mines_at_edges() {
     #[rustfmt::skip]
