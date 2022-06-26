@@ -1,37 +1,37 @@
 #[test]
 fn empty() {
-    assert_eq!(lib
+    assert_eq!(acronym::abbreviate(""), "");
 }
 
 #[test]
 #[ignore]
 fn basic() {
-    assert_eq!(libPNG");
+    assert_eq!(acronym::abbreviate("Portable Network Graphics"), "PNG");
 }
 
 #[test]
 #[ignore]
 fn lowercase_words() {
-    assert_eq!(lib
+    assert_eq!(acronym::abbreviate("Ruby on Rails"), "ROR");
 }
 
 #[test]
 #[ignore]
 fn camelcase() {
-    assert_eq!(libHTML");
+    assert_eq!(acronym::abbreviate("HyperText Markup Language"), "HTML");
 }
 
 #[test]
 #[ignore]
 fn punctuation() {
-    assert_eq!(lib;
+    assert_eq!(acronym::abbreviate("First In, First Out"), "FIFO");
 }
 
 #[test]
 #[ignore]
 fn all_caps_word() {
     assert_eq!(
-        lib"),
+        acronym::abbreviate("GNU Image Manipulation Program"),
         "GIMP"
     );
 }
@@ -39,14 +39,14 @@ fn all_caps_word() {
 #[test]
 #[ignore]
 fn all_caps_word_with_punctuation() {
-    assert_eq!(lib "PHP");
+    assert_eq!(acronym::abbreviate("PHP: Hypertext Preprocessor"), "PHP");
 }
 
 #[test]
 #[ignore]
 fn punctuation_without_whitespace() {
     assert_eq!(
-        libconductor"),
+        acronym::abbreviate("Complementary metal-oxide semiconductor"),
         "CMOS"
     );
 }
@@ -55,7 +55,7 @@ fn punctuation_without_whitespace() {
 #[ignore]
 fn very_long_abbreviation() {
     assert_eq!(
-        lib
+        acronym::abbreviate(
             "Rolling On The Floor Laughing So Hard That My Dogs Came Over And Licked Me"
         ),
         "ROTFLSHTMDCOALM"
@@ -66,7 +66,7 @@ fn very_long_abbreviation() {
 #[ignore]
 fn consecutive_delimiters() {
     assert_eq!(
-        libn air"),
+        acronym::abbreviate("Something - I made up from thin air"),
         "SIMUFTA"
     );
 }
@@ -74,11 +74,11 @@ fn consecutive_delimiters() {
 #[test]
 #[ignore]
 fn apostrophes() {
-    assert_eq!(lib
+    assert_eq!(acronym::abbreviate("Halley's Comet"), "HC");
 }
 
 #[test]
 #[ignore]
 fn underscore_emphasis() {
-    assert_eq!(lib);
+    assert_eq!(acronym::abbreviate("The Road _Not_ Taken"), "TRNT");
 }
