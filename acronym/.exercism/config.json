@@ -1,29 +1,38 @@
 {
   "blurb": "Convert a long phrase to its acronym",
   "authors": [
-    "lpalma"
+    "gregcline"
   ],
   "contributors": [
-    "alanvardy",
-    "iHiD",
-    "marionebl",
+    "AndrewKvalheim",
+    "ClashTheBunny",
+    "coriolinus",
+    "cwhakes",
+    "efx",
+    "ErikSchierboom",
+    "IanWhitney",
+    "ktomsic",
+    "lutostag",
+    "mkantor",
     "navossoc",
+    "nfiles",
     "petertseng",
-    "ppartarr",
-    "rbasso",
-    "sharno",
-    "sshine",
-    "tejasbubane"
+    "rofrol",
+    "stringparser",
+    "thvdburgt",
+    "xakon",
+    "ZapAnton"
   ],
   "files": {
     "solution": [
-      "src/Acronym.hs"
+      "src/lib.rs",
+      "Cargo.toml"
     ],
     "test": [
-      "test/Tests.hs"
+      "tests/acronym.rs"
     ],
     "example": [
-      ".meta/examples/success-standard/src/Acronym.hs"
+      ".meta/example.rs"
     ]
   },
   "source": "Julien Vanier",
